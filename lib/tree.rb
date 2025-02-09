@@ -7,28 +7,28 @@ class Tree
   end
 
   def build_tree
-    to_work = @array.uniq.sort.dup
-     start = to_work[0]
-     last = to_work[-1]
+    to_work = @array.sort.uniq.dup
+     start = 0
+     last = to_work.size 
     mid = (start+last) / 2
     p "this is start #{start}, this is last #{last}, this is mid #{mid}"
-    root = Node.new(mid)
+    root = Node.new(to_work[mid])
     root.left = recursive_tree(to_work, start, mid - 1)
     root.right = recursive_tree(to_work, mid + 1, last)
     root
   end
 
   def recursive_tree(array, start, last)
-    p to_work = array
+    p array
     if start > last
       return nil
     end
   # p start, last, mid
    p mid = (start + last) / 2
-    root = Node.new(mid)
+    root = Node.new(array[mid])
     p "this is start: #{start}, this is last #{last}, this is mid #{mid}"
-    root.left = recursive_tree(to_work, start, mid - 1)
-    root.right = recursive_tree(to_work, mid + 1, last)
+    root.left = recursive_tree(array, start, mid - 1)
+    root.right = recursive_tree(array, mid + 1, last)
     root
   end
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -40,5 +40,5 @@ class Tree
 
 end
 
-tree = Tree.new([1,2,3,4,5,6,7,9,9,9,8])
+tree = Tree.new(Array.new(50) {rand(1..200)})
 p tree.pretty_print
