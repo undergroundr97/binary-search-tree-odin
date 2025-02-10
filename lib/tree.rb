@@ -51,12 +51,51 @@ class Tree
     end
     return root
   end
-
+  def del_node (root = @root, value)
+    if root == nil
+      return root
+    end
+    if root.value > value
+      root.left = del_node(root.left, value)
+    elsif root.value < value 
+      root.right = del_node(root.right, value)
+    else
+      if root.left == nil
+        return root.right
+      end
+      if root.right == nil
+        return root.left
+      end
+      current_node = sucessor(root)
+      root.value = current_node.value
+      root.right = del_node(root.right, current_node.value)
+    end
+    return root
+  end
+  def sucessor(current_node)
+    current_node = current_node.right
+    while (current_node != nil && current_node.left != nil)
+      current_node = current_node.left
+    end
+    current_node
+  end
+  def find(root = @root, value)
+    if root.value == value
+      return root
+    end 
+    if root.value > value
+      root.left = find(root.left, value)
+    elsif root.value < value
+      root.right = find(root.right, value)
+    end
+  end
 end
 
-tree = Tree.new(Array.new(7) {rand(1..9)})
+tree = Tree.new([1,2,3,4,5,6,7,8,9,10,11,12])
 # p tree.pretty_print
-p tree.insert(5)
+p tree.insert(13)
 # p tree.root
 p tree.pretty_print
-# p tree.pretty_print
+p tree.del_node(7)
+p tree.pretty_print
+p "this is the node value: #{tree.find(12)}"
