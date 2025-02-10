@@ -90,17 +90,23 @@ class Tree
       root.right = find(root.right, value)
     end
   end
-  def level_order(root = @root, array = [], &block )
-    
+  def level_order(root = @root, &block )
+    if block_given?
+       value_of = level_order(@root) 
+      final_array = []
+      for item in value_of
+        final_array << yield(item) if item != nil
+      end
+      final_array
+    else
     visited = [root]
-   
     final_arr = []
     final_arr << root.value
     while !visited.empty?
-      current_node = visited.shift
-      if current_node.value == nil
-        return
+      if root == nil
+        return final_arr.join('')
       end
+      current_node = visited.shift
       p "this is current node: #{current_node.value}"
       if(current_node.left != nil)
         final_arr << current_node.left.value
@@ -113,7 +119,7 @@ class Tree
       visited.drop(1)
       # p final_arr
     end
-    puts final_arr.join(',')
+    final_arr
     # p visited
     # array_holder = array
     # current_node = root
@@ -129,12 +135,14 @@ class Tree
     
     # p current_node
     # p array_holder
+    # end
+    end
   end
 
 end
 
-# tree = Tree.new(Array.new(21) {rand(1..50)})
-tree = Tree.new([1,2,3,4,5,6,7,8,10])
+tree = Tree.new(Array.new(100) {rand(1..100)})
+# tree = Tree.new([1,2,3,4,5,6,7,8,10])
 # p tree.pretty_print
 # p tree.root
 p tree.pretty_print
@@ -143,4 +151,4 @@ p tree.del_node(7)
 p tree.pretty_print
 # p tree.find(3)
 # p "this is the node value: #{tree.find(12)}"
-p tree.level_order
+p tree.level_order {|item|  item > 60}
