@@ -11,7 +11,7 @@ class Tree
      start = 0
      last = to_work.size 
     mid = (start+last) / 2
-    p "this is start #{start}, this is last #{last}, this is mid #{mid}"
+    # p "this is start #{start}, this is last #{last}, this is mid #{mid}"
     root = Node.new(to_work[mid])
     root.left = recursive_tree(to_work, start, mid - 1)
     root.right = recursive_tree(to_work, mid + 1, last)
@@ -19,14 +19,14 @@ class Tree
   end
 
   def recursive_tree(array, start, last)
-    p array
+    array
     if start > last
       return nil
     end
   # p start, last, mid
-   p mid = (start + last) / 2
+    mid = (start + last) / 2
     root = Node.new(array[mid])
-    p "this is start: #{start}, this is last #{last}, this is mid #{mid}"
+    #  "this is start: #{start}, this is last #{last}, this is mid #{mid}"
     root.left = recursive_tree(array, start, mid - 1)
     root.right = recursive_tree(array, mid + 1, last)
     root
@@ -36,9 +36,27 @@ class Tree
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
- 
+  def insert(root = @root, value)
+    p root
+    if root.value == nil
+      return Node.new(value)
+    end
+    if (root == value)
+      return root
+    end
+    if (value < root.value) 
+      root.left = insert(root.left, value)
+    elsif (value > root.value)
+      root.right = insert(root.right, value)
+    end
+    return root
+  end
 
 end
 
-tree = Tree.new(Array.new(50) {rand(1..200)})
+tree = Tree.new(Array.new(7) {rand(1..9)})
+# p tree.pretty_print
+p tree.insert(5)
+# p tree.root
 p tree.pretty_print
+# p tree.pretty_print
