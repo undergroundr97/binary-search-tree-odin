@@ -38,7 +38,7 @@ class Tree
   end
   def insert(root = @root, value)
     p root
-    if root.value == nil
+    if root == nil
       return Node.new(value)
     end
     if (root == value)
@@ -83,19 +83,64 @@ class Tree
     if root.value == value
       return root
     end 
+
     if root.value > value
       root.left = find(root.left, value)
     elsif root.value < value
       root.right = find(root.right, value)
     end
   end
+  def level_order(root = @root, array = [], &block )
+    
+    visited = [root]
+   
+    final_arr = []
+    final_arr << root.value
+    while !visited.empty?
+      current_node = visited.shift
+      if current_node.value == nil
+        return
+      end
+      p "this is current node: #{current_node.value}"
+      if(current_node.left != nil)
+        final_arr << current_node.left.value
+        visited << current_node.left
+      end
+      if(current_node.right != nil)
+        final_arr << current_node.right.value
+        visited << current_node.right
+      end
+      visited.drop(1)
+      # p final_arr
+    end
+    puts final_arr.join(',')
+    # p visited
+    # array_holder = array
+    # current_node = root
+    # array_holder << root.value if !array_holder.include?(root.value)
+    # if current_node.left != nil
+    #   array_holder << root.left.value if !array_holder.include?(root.left.value)
+    # end
+    # if current_node.right != nil
+    #   array_holder << root.right.value if !array_holder.include?(root.right.value)
+    # end
+    # current_node = current_node.left if array_holder.include?(root.left.value)
+    # p array_holder
+    
+    # p current_node
+    # p array_holder
+  end
+
 end
 
-tree = Tree.new([1,2,3,4,5,6,7,8,9,10,11,12])
+# tree = Tree.new(Array.new(21) {rand(1..50)})
+tree = Tree.new([1,2,3,4,5,6,7,8,10])
 # p tree.pretty_print
-p tree.insert(13)
 # p tree.root
 p tree.pretty_print
 p tree.del_node(7)
+# p tree.insert(13)
 p tree.pretty_print
-p "this is the node value: #{tree.find(12)}"
+# p tree.find(3)
+# p "this is the node value: #{tree.find(12)}"
+p tree.level_order
