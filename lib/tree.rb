@@ -1,9 +1,10 @@
 require_relative 'node'
 class Tree 
-  attr_accessor :root
+  attr_accessor :root, :height
   def initialize (array)
     @array = array
     @root = build_tree
+    @height = 0
   end
 
   def build_tree
@@ -19,7 +20,7 @@ class Tree
   end
 
   def recursive_tree(array, start, last)
-    array
+    # array
     if start > last
       return nil
     end
@@ -107,7 +108,7 @@ class Tree
         return final_arr.join('')
       end
       current_node = visited.shift
-      p "this is current node: #{current_node.value}"
+       "this is current node: #{current_node.value}"
       if(current_node.left != nil)
         final_arr << current_node.left.value
         visited << current_node.left
@@ -122,7 +123,7 @@ class Tree
     final_arr
     # p visited
     # array_holder = array
-    # current_node = root
+    # current_node = rootf
     # array_holder << root.value if !array_holder.include?(root.value)
     # if current_node.left != nil
     #   array_holder << root.left.value if !array_holder.include?(root.left.value)
@@ -138,7 +139,18 @@ class Tree
     # end
     end
   end
+  def binary_height(root = @root, height = 0)
+    p root
+    if root == nil
+      return 0
+    end
 
+    leftHeight = binary_height(root.left, height)
+    rightHeight = binary_height(root.right, height)
+    return [leftHeight, rightHeight].max + 1
+  end
+  
+    
 end
 
 tree = Tree.new(Array.new(100) {rand(1..100)})
@@ -151,4 +163,5 @@ p tree.del_node(7)
 p tree.pretty_print
 # p tree.find(3)
 # p "this is the node value: #{tree.find(12)}"
-p tree.level_order {|item|  item > 60}
+tree.level_order {|item|  item > 60}
+p tree.binary_height
